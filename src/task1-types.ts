@@ -26,6 +26,7 @@ export function formatBook(book: Book): string {
 }
 
 // Функция calculateAverageYear(books: Book[]): number возвращает средний год издания. Если книг нет или у них нет года — вернуть 0.
+/** @deprecated пока не используется, задел на фичу "Статистика коллекции" */
 export function calculateAverageYear(books: Book[]): number {
   const booksWithYear = books.filter((book) => book.year !== undefined);
 

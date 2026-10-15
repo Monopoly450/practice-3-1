@@ -7,31 +7,63 @@
 // Проверка: npm test -- task6
 // ============================================================
 
-import { Book } from "./task1-types";
+import { Book, formatBook } from "./task1-types";
+import { createBookFromForm } from "./task4-integration";
 import { filterByTitle, sortBooks } from "./task5-utils";
 
-/*
-  Реализуйте класс BookCatalog.
+export class BookCatalog {
+  private books: Book[];
+  public readonly id: string;
 
-  Состояние:
-    - books: Book[]        — приватное, снаружи недоступно
-    - id: string           — readonly
+  constructor(id: string, books: Book[] = []) {
+    this.id = id;
+    this.books = [...books];
+  }
+  public addBook(book: Book): void {
+    this.books = [...this.books, book];
+  }
 
-  Конструктор: (id: string, books: Book[] = [])
+  public removeBook(id: string): void {
+    this.books = this.books.filter((book) => book.id !== id);
+  }
 
-  Публичный API:
-    addBook(book: Book): void
-    removeBook(id: string): void
-    getBooks(): Book[]
-    searchByTitle(query: string): Book[]
-    sortBy(sortType: 'year' | 'rating'): Book[]
-    get count(): number
+  public getBooks(): Book[] {
+    return [...this.books];
+  }
 
-  Требования:
-    - addBook / removeBook не мутируют массив, а создают новый
-    - searchByTitle и sortBy переиспользуют filterByTitle / sortBooks
-    - внешний код не может присвоить this.books напрямую
+  public searchByTitle(query: string): Book[] {
+    return this.books.filter(filterByTitle(query));
+  }
 
-  Бонус: класс Book с полями id, title, authors, year?, rating?,
-  методом format() и статическим createFromFormData(FormData).
-*/
+  public sortBy(sortType: "year" | "rating"): Book[] {
+    return sortBooks(this.books, sortType);
+  }
+
+  public get count(): number {
+    return this.books.length;
+  }
+}
+
+export class BookClass implements Book {
+  public readonly id: string;
+  public title: string;
+  public authors: string[];
+  public year?: number;
+  public rating?: number;
+
+  constructor(book: Book) {
+    this.id = book.id;
+    this.title = book.title;
+    this.authors = [...book.authors];
+    this.year = book.year;
+    this.rating = book.rating;
+  }
+
+  public format(): string {
+    return formatBook(this);
+  }
+
+  public static createFromFormData(formData: FormData): BookClass {
+    return new BookClass(createBookFromForm(formData));
+  }
+}
