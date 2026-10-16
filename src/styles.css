@@ -10,6 +10,7 @@ body {
 }
 
 h1 { margin-bottom: 20px; }
+h2 { margin: 24px 0 16px; }
 
 form, .filters {
   background: white;
@@ -37,7 +38,7 @@ button {
 
 button:hover { background: #1d4ed8; }
 
-#bookList {
+#bookList, .book-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
@@ -52,6 +53,7 @@ button:hover { background: #1d4ed8; }
 
 .book-card h3 { margin-bottom: 8px; }
 .book-card p { color: #555; font-size: 14px; }
+.book-card button { margin-top: 12px; margin-right: 8px; }
 
 @keyframes fadeIn {
   from {
